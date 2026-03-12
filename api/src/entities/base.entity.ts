@@ -4,9 +4,6 @@ export abstract class BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ default: true })
-  is_active: boolean;
-
   @Column({ 
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP'
