@@ -29,7 +29,7 @@ export function ImageUpload({ image, setImage, setFile }: ImageUploadProps) {
       ${isDragging && "ring-3 ring-primary ring-offset-2 bg-secondary"}`
     }>
       {image ? (
-        <div className="relative w-full h-full">
+        <div className="relative w-full h-full rounded-xl bg-background-secondary">
           <Image
             src={image}
             alt="Selected"

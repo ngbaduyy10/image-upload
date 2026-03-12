@@ -37,6 +37,9 @@ export function ImageUploadDialog({ open, onOpenChange }: ImageUploadDialogProps
         await mutate("/api/images");
         toast.success("Image uploaded successfully");
         onOpenChange(false);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        setImage(null);
+        setFile(null);
       }
     } catch (error) {
       console.error(error);

@@ -6,6 +6,7 @@
 
 @theme inline {
   --color-background: var(--background);
+  --color-background-secondary: var(--background-secondary);
   --color-foreground: var(--foreground);
   --font-main: var(--font-sen);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -47,7 +48,8 @@
 }
 
 :root {
-  --background: #e5e5e5;
+  --background: #d6d6d6;
+  --background-secondary: #f1f1f1;
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -124,5 +126,8 @@
   }
   .flex-between {
     @apply flex items-center justify-between;
+  }
+  .page-container {
+    @apply w-full sm:max-w-[600px] mx-auto;
   }
 }

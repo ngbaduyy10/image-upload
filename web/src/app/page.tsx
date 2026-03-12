@@ -4,6 +4,7 @@ import { Header } from "@/components/Header";
 import { ApiResponse } from "@/dto/apiResponse.dto";
 import Image from "@/models/image";
 import useSWR from "swr";
+import { Preview } from "@/components/Preview";
 
 const fetcher = async (url: string) => {
   const response = await fetch(url);
@@ -23,8 +24,9 @@ export default function Home() {
   console.log(data);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col">
       <Header />
+      <Preview images={data?.data ?? []} />
     </div>
   );
 }
