@@ -1,18 +1,38 @@
+"use client";
+
 import Image from "@/models/image";
 import { ImageOff } from "lucide-react";
 import { ImageCard } from "./ImageCard";
+import { ApiResponse } from "@/dto/apiResponse.dto";
+import useSWR from "swr";
+import { ImageCardSkeleton } from "./ImageCardSkeleton";
 
-interface PreviewProps {
-  images: Image[];
-}
+const fetcher = async (url: string) => {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error("Failed to fetch images");
+  }
 
-export function Preview({ images }: PreviewProps) {
+  return response.json();
+};
+
+export function Preview() {
+  const { data, isLoading } = useSWR<ApiResponse<Image[]>>(
+    "/api/images",
+    fetcher
+  );
+  const images = data?.data ?? [];
+
   return (
     <div className="page-container mt-3 px-2">
       <h1 className="text-3xl font-bold leading-[1.5]">Image Uploaded</h1>
       <p className="text-muted-foreground text-lg leading-tight">Preview of all images uploaded</p>
 
-      {images.length > 0 ? (
+      {isLoading ? (
+        <div className="space-y-5 my-4">
+          <ImageCardSkeleton />
+        </div>
+      ) : images.length > 0 ? (
         <div className="space-y-5 my-4">
           {images.map((image) => (
             <ImageCard key={image.id} image={image} />

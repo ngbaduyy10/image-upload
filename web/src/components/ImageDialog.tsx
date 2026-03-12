@@ -1,8 +1,12 @@
+"use client";
+
 import { X } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "./ui/dialog";
 import Image from "@/models/image";
 import NextImage from "next/image";
 import { CommentInput } from "./CommentInput";
+import { useEffect, useState } from "react";
+import Comment from "@/models/comment";
 
 interface ImageDialogProps {
   image: Image;
@@ -11,6 +15,12 @@ interface ImageDialogProps {
 }
 
 export function ImageDialog({ image, open, onOpenChange }: ImageDialogProps) {
+  const [comments, setComments] = useState<Comment[]>(image.comments);
+
+  useEffect(() => {
+    setComments(image.comments);
+  }, [image.comments]);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
@@ -40,18 +50,18 @@ export function ImageDialog({ image, open, onOpenChange }: ImageDialogProps) {
             </div>
 
             <div className="flex-1 flex flex-col px-4 py-1 overflow-y-auto main-scrollbar">
-              <p className="text-lg font-semibold mb-4">
-                Comments ({image.comments.length})
+              <p className="text-lg font-semibold mb-3">
+                Comments ({comments.length})
               </p>
-              {image.comments.map((comment) => (
-                <div key={comment.id} className="p-4 border-b border-border">
-                  <p>{comment.content}</p>
+              {comments.map((comment) => (
+                <div key={comment.id} className="mb-3 border-b border-border pb-3">
+                  <p className="leading-[1.1]">{comment.content}</p>
                 </div>
               ))}
             </div>
 
             <div className="p-4 border-t border-border flex-shrink-0">
-              <CommentInput />
+              <CommentInput imageId={image.id} setComments={setComments} />
             </div>
           </div>
         </div>
