@@ -15,7 +15,7 @@ The project has two parts:
 
 ## 🧰 Tech Stack
 
-- **Frontend**: Next.js, TypeScript, Tailwind CSS, SWR, Shadcn Ui.
+- **Frontend**: Next.js, TypeScript, Tailwind CSS, SWR, Shadcn UI.
 - **Backend**: NestJS, TypeScript, TypeORM, PostgreSQL, Multer.
 - **Cloud storage**: Cloudinary.
 
