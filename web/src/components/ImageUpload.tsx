@@ -10,9 +10,10 @@ interface ImageUploadProps {
   image: string | null;
   setImage: (image: string | null) => void;
   setFile: (file: File | null) => void;
+  loading: boolean;
 }
 
-export function ImageUpload({ image, setImage, setFile }: ImageUploadProps) {
+export function ImageUpload({ image, setImage, setFile, loading }: ImageUploadProps) {
   const {
     isDragging, 
     fileInputRef, 
@@ -39,7 +40,9 @@ export function ImageUpload({ image, setImage, setFile }: ImageUploadProps) {
           />
           <div 
             className="absolute -top-5 -right-5 h-8 w-8 flex-center bg-black/50 text-white rounded-full hover:bg-black/70 cursor-pointer" 
-            onClick={handleRemoveImage}
+            onClick={() => {
+              if (!loading) handleRemoveImage();
+            }}
           >
             <X className="w-4 h-4 stroke-[3]" />
           </div>

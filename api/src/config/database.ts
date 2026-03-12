@@ -12,6 +12,9 @@ export const DatabaseConfig = TypeOrmModule.forRootAsync({
     database: configService.get<string>('DB_NAME'),
     entities: [__dirname + '/../entities/*.entity{.ts,.js}'],
     synchronize: configService.get<boolean>('DB_SYNC'),
+    ...(process.env.NODE_ENV === 'production' && {
+      ssl: { rejectUnauthorized: false },
+    }),
   }),
   inject: [ConfigService],
 });

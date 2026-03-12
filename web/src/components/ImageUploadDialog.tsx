@@ -20,6 +20,11 @@ export function ImageUploadDialog({ open, onOpenChange }: ImageUploadDialogProps
   const [loading, setLoading] = useState(false);
   const { mutate } = useSWRConfig();
 
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (loading && !nextOpen) return;
+    onOpenChange(nextOpen);
+  };
+
   const handleUpload = async () => {
     setLoading(true);
     try {
@@ -50,13 +55,24 @@ export function ImageUploadDialog({ open, onOpenChange }: ImageUploadDialogProps
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent
         showCloseButton={false}
+        onInteractOutside={(event) => {
+          if (loading) event.preventDefault();
+        }}
+        onEscapeKeyDown={(event) => {
+          if (loading) event.preventDefault();
+        }}
         className="bg-transparent border-none ring-0 shadow-none p-0 gap-3 sm:w-[500px] sm:max-w-[500px]"
       >
         <DialogHeader className="flex flex-row items-center gap-3">
-          <ArrowLeft className="h-8 w-8 text-white cursor-pointer" onClick={() => onOpenChange(false)} />
+          <ArrowLeft
+            className={`h-8 w-8 text-white ${loading ? "cursor-not-allowed opacity-60" : "cursor-pointer"}`}
+            onClick={() => {
+              if (!loading) onOpenChange(false);
+            }}
+          />
           <div className="flex-1 text-center">
             <DialogTitle className="text-white font-semibold text-2xl">Upload Image</DialogTitle>
             <DialogDescription className="sr-only">
@@ -66,7 +82,12 @@ export function ImageUploadDialog({ open, onOpenChange }: ImageUploadDialogProps
           <div className="w-8 h-8" />
         </DialogHeader>
 
-        <ImageUpload image={image} setImage={setImage} setFile={setFile} />
+        <ImageUpload 
+          image={image} 
+          setImage={setImage} 
+          setFile={setFile} 
+          loading={loading} 
+        />
 
         <Button className="w-full py-[22px] text-[16px]" onClick={handleUpload} disabled={loading}>
           <ImageUp className="size-5" strokeWidth={2} />

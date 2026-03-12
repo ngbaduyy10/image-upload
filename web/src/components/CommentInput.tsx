@@ -25,6 +25,15 @@ export function CommentInput({ imageId, setComments }: CommentInputProps) {
     const trimmedContent = content.trim();
     if (!trimmedContent || loading) return;
 
+    const optimisticComment: Comment = {
+      id: `temp-${Date.now()}`,
+      content: trimmedContent,
+      created_at: new Date(),
+      updated_at: new Date(),
+    };
+    setComments((prevComments) => [...prevComments, optimisticComment]);
+    setContent("");
+
     setLoading(true);
     try {
       const response = await createComment(imageId, trimmedContent);
@@ -33,17 +42,8 @@ export function CommentInput({ imageId, setComments }: CommentInputProps) {
         toast.error("Failed to create comment");
         return;
       }
-
-      const optimisticComment: Comment = {
-        id: `temp-${Date.now()}`,
-        content: trimmedContent,
-        created_at: new Date(),
-        updated_at: new Date(),
-      };
-      setComments((prevComments) => [...prevComments, optimisticComment]);
       
       await mutate("/api/images");
-      setContent("");
     } catch (error) {
       console.error(error);
       toast.error("Failed to create comment");
